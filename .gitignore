@@ -39,4 +39,14 @@ Mappings/
 .idea*
 .idea/*
 
+#ignorando arquivos pessoais
+data/whatsapp.txt
+results/*.png
 
+#adicionando exceções 
+!results\allactive_hours.png
+!results\allusers_wordcloud.png
+!results\calendar*
+!results\sentiment.png
+!results\spider_plot.png
+!results\Colete_active_days.png
