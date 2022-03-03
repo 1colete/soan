@@ -23,7 +23,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument('--file', help='The name of the movie', required=True)
     parser.add_argument('--language', help='The language of the texts', required=True)
     parser.add_argument('--hist_mask', help='Path of histogram mask', required=False, default="images/mask.png")
-    parser.add_argument('--cloud_mask', help='Path of cloud mask', required=False, default="images/heart.jpg")
+    # parser.add_argument('--cloud_mask', help='Path of cloud mask', required=False, default="images/heart.jpg")
     args = parser.parse_args()
 
     return args
@@ -35,8 +35,8 @@ def main():
     # Load data
     df = helper.import_data(f'data/{args.file}')
     df = helper.preprocess_data(df)
-    user_labels = {old: new for old, new in zip(sorted(df.User.unique()), ['Her', 'Me'])}
-    df.User = df.User.map(user_labels)
+    # user_labels = {old: new for old, new in zip(sorted(df.User.unique()), ['Her', 'Me'])}
+    # df.User = df.User.map(user_labels)
     users = set(df.User)
 
     # General plots
@@ -56,17 +56,18 @@ def main():
     counts = tf_idf.count_words_per_user(df, sentence_column="Message_Only_Text", user_column="User")
     counts = tf_idf.remove_stopwords(counts, language=args.language, column="Word")
     unique_words = tf_idf.get_unique_words(counts, df, version='C')
-    for user in users:
-        tf_idf.plot_unique_words(unique_words,
-                                 user=user,
-                                 image_path=args.hist_mask,
-                                 image_url=None,
-                                 title="Me",
-                                 title_color="white",
-                                 title_background='#AAAAAA',
-                                 width=400,
-                                 height=500,
-                                 save=user)
+    for user in df.User.unique():
+        tf_idf.plot_unique_words(unique_words, 
+                                user= user, 
+                                image_path='images\mask.png', # use '../images/mask.png' to use the standard image
+                                image_url=None, 
+                                title=user, 
+                                title_color="white", 
+                                title_background='#AAAAAA', 
+                                width=200, 
+                                height=100, 
+                                save = user
+                                )
 
     # https://github.com/pandas-dev/pandas/issues/17892
     temp = df[['index', 'Message_Raw', 'User', 'Message_Clean', 'Message_Only_Text']].copy()
@@ -93,20 +94,24 @@ def main():
     from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
     analyser = SentimentIntensityAnalyzer()
     df['Sentiment'] = df.apply(lambda row: analyser.polarity_scores(row.Message_Clean)["compound"], 1)
-    sentiment.plot_sentiment(df, colors=['#EAAA69', '#5361A5'], savefig=True)
+    sentiment.plot_sentiment(df, savefig=True)
 
     # Wordclouds
     # Counts words and create dictionary of words with counts
     counts = tf_idf.count_words_per_user(df, sentence_column="Message_Only_Text", user_column="User")
-    counts = tf_idf.remove_stopwords(counts, language="dutch", column="Word")
+    counts = tf_idf.remove_stopwords(counts, language=args.language, column="Word")
 
     for user in users:
         words = counts[["Word", user]].set_index('Word').to_dict()[user]
-        wordcloud.create_wordcloud(words, random_state=42, mask=args.cloud_mask,
+        wordcloud.create_wordcloud(words, random_state=42,
                                    max_words=1000, max_font_size=50, scale=2,
                                    normalize_plurals=False, relative_scaling=0.5,
                                    savefig=True, name=user)
-
+    # all users wordcloud
+    wordcloud.create_wordcloud(words,random_state=42,
+                            max_words=1000, max_font_size=50, scale=2, 
+                            normalize_plurals=False, relative_scaling = 0.5,
+                            savefig=True, name= 'allusers')
 
 if __name__ == "__main__":
     main()

@@ -192,7 +192,7 @@ def print_stats(unique_emoji, counts, save=False):
         file = None
     
     print("#############################", file=file)
-    print("### Unique Emoji (TF-IDF) ###", file=file)
+    print("### Emoji Únicos (TF-IDF) ###", file=file)
     print("#############################", file=file)
     print(file=file)
     
@@ -203,9 +203,9 @@ def print_stats(unique_emoji, counts, save=False):
             print(emoji, score, file=file)
         print(file=file)
 
-    print("#########################", file=file)
-    print("### Most Common Emoji ###", file=file)
-    print("#########################", file=file)
+    print("##############################", file=file)
+    print("### Emojis Mais Utilizados ###", file=file)
+    print("##############################", file=file)
     print(file=file)
     
     for user in counts.keys():
@@ -245,8 +245,8 @@ def plot_counts(counts, user, savefig=False):
     plt.xticks([])
     
     # Set labels
-    ax.set_ylabel('Nr Words')
-    plt.title("Most often used Emoji")
+    ax.set_ylabel('Nº de Palavras')
+    plt.title("Emojis mais utilizados")
     from matplotlib.font_manager import FontProperties
 
     # Load Apple Color Emoji font
@@ -262,7 +262,7 @@ def plot_counts(counts, user, savefig=False):
     # Show figure in a nice format
     plt.tight_layout()
     if savefig:
-        fig.savefig(f'results/emoji_{user}.png', format="PNG", dpi=100)
+        fig.savefig(f'results/{user}_emoji.png', format="PNG", dpi=100)
     else:
         plt.show()
 

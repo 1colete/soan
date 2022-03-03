@@ -61,7 +61,7 @@ def create_wordcloud(data, cmap=None, savefig=False, name=None, **kwargs):
         wc.recolor(colormap=cmap, random_state=kwargs['random_state'])
         
     if savefig:
-        wc.to_file(f"results/wordcloud_{name}.png")
+        wc.to_file(f"results/{name}_wordcloud.png")
     else:
         return wc.to_image()
 

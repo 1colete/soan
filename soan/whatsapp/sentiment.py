@@ -58,7 +58,7 @@ def print_avg_sentiment(df):
     """
     
     # Prints the average sentiment per user
-    print_title('Average Sentiment', 3)
+    print_title('Sentimento Médio', 3)
     for user in df.User.unique():
         avg_sentiment = round(np.mean(df[df.User == user]['Sentiment']), 3)
         print('{0: <30}'.format(user + ':') + '\t\t' + str(avg_sentiment))
@@ -177,7 +177,7 @@ def plot_sentiment(df, colors=None, savefig=False):
     # Create legend    
     font = {'fontname':'Comic Sans MS', 'fontsize':24}
     ax.legend(handles=legend_elements, bbox_to_anchor=(0.9, 1), loc=2, borderaxespad=0.)
-    ax.set_title('Positivity of Messages', **font)
+    ax.set_title('Positividade das Mensagens', **font)
 
     # Set size of graph
     fig.set_size_inches(13, 5)

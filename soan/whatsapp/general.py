@@ -23,9 +23,9 @@ def print_users(df):
         Dataframe of all messages
     """
     
-    print("#" * (len('Users')+8))
-    print("##  " + 'Users' + "  ##" )
-    print("#" * (len('Users')+8))
+    print("#" * (len('Usuários')+8))
+    print("##  " + 'Usuários' + "  ##" )
+    print("#" * (len('Usuários') +8))
     print()
     
     for user in df.User.unique():
@@ -58,9 +58,9 @@ def plot_active_hours(df, color='#ffdfba', savefig=False, dpi=100, user='All'):
     # Prepare data for plotting
     if user != 'All':
         df = df.loc[df.User == user]
-        title = 'Active hours of {}'.format(user)
+        title = 'Horario de atividade  {}'.format(user)
     else:
-        title = 'Active hours of all users'
+        title = 'Horario de atividade de todos os usuários'
         
     hours = df.Hour.value_counts().sort_index().index
     count = df.Hour.value_counts().sort_index().values
@@ -82,8 +82,8 @@ def plot_active_hours(df, color='#ffdfba', savefig=False, dpi=100, user='All'):
     ax.set_ylabel('', labelpad=50, rotation='horizontal',
                    color="#6CA870",**font)
     ax.set_xticks([0, 3, 6, 9, 12, 15, 18, 21, 24])
-    ax.set_xticklabels(["Midnight", "3 AM", "6 AM", "9 AM", "Noon", "3 PM", "6 PM", "9 PM", 
-                       "Midnight"], **font)
+    ax.set_xticklabels(["Meia Noite", "3 AM", "6 AM", "9 AM", "Meio Dia", "3 PM", "6 PM", "9 PM", 
+                       "Meia Noite"], **font)
     plt.title(title, y=0.8)
     
     # Create horizontal line instead of x axis
@@ -131,9 +131,9 @@ def plot_active_days(df, savefig=False, dpi=100, user='All'):
     # Prepare data
     if user != 'All':
         df = df.loc[df.User == user, :]
-        title = 'Active days of {}'.format(user)
+        title = 'Horário de atividade de {}'.format(user)
     else:
-        title = 'Active days of all users'
+        title = 'Horário de atividade de todos os Usuários'
 
     day_of_week = df.apply(lambda row: row.Date.dayofweek, axis=1)
     days = day_of_week.value_counts().sort_index().index
@@ -154,7 +154,7 @@ def plot_active_days(df, savefig=False, dpi=100, user='All'):
     # # Set labels and location y-axis
     ax.set_yticks([])
     ax.set_xticks(days)
-    ax.set_xticklabels(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    ax.set_xticklabels(["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
                       **font)
 
     # # Make them with to remove any image line that may be left
@@ -199,7 +199,7 @@ def plot_day_spider(df, colors=None, savefig=False, dpi=100):
         colors = plt.rcParams['axes.prop_cycle'].by_key()['color'] * 10
 
     # Get count per day of the week
-    categories = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    categories =["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
     N = len(categories)
     count = list(df.Day_of_Week.value_counts().sort_index().values)
     count += count[:1]
@@ -248,7 +248,7 @@ def plot_day_spider(df, colors=None, savefig=False, dpi=100):
     
     # Legend and title
     ax.legend(handles=legend_elements, bbox_to_anchor=(1.2, 1), loc=2, borderaxespad=0.)
-    plt.title('Active days of each user', y=1.2)
+    plt.title('Dias ativos de cada usuário', y=1.2)
     
     # Save or show figure    
     if savefig:
@@ -309,7 +309,7 @@ def plot_messages(df, colors=None, trendline=False, savefig=False, dpi=100):
     ax.spines['top'].set_visible(False)
 
     font = {'fontname':'Comic Sans MS', 'fontsize':14}
-    ax.set_ylabel('Nr of Messages', {'fontname':'Comic Sans MS', 'fontsize':14})
+    ax.set_ylabel('Nº de Messagens', {'fontname':'Comic Sans MS', 'fontsize':14})
     ax.legend(handles=legend_elements, bbox_to_anchor=(0.5, 1), loc=2, borderaxespad=0.)
 
     # Set size of graph
@@ -325,7 +325,7 @@ def plot_messages(df, colors=None, trendline=False, savefig=False, dpi=100):
     # Legend and title
     ax.legend(custom_lines, [user for user in users.keys()], bbox_to_anchor=(1.05, 1), loc=2,
               borderaxespad=0.)
-    plt.title("Weekly number of messages per user", fontsize=20)
+    plt.title("Nº de Messagens por semana por usário", fontsize=20)
     
     if savefig:
         plt.savefig(f'results/moments.png', format="PNG", dpi=dpi)
@@ -398,14 +398,14 @@ def print_stats(df, love=False, save=False):
         file = None
 
     # Print number of messages
-    print_title('Number of Messages', file=file)
+    print_title('Numero de Messagens', file=file)
     for user in df.User.unique():
         nr_messages = len(df[df.User == user])
         print(str(nr_messages) + '\t' + user, file=file)
     print(file=file)
 
     # Print number of words
-    print_title('Number of Words', file=file)
+    print_title('Numero de Palavras', file=file)
     for user in df.User.unique():
         nr_words = len([x for sublist in df[df.User==user].Message_Clean.values 
                            for x in sublist.split(' ')])
@@ -413,7 +413,7 @@ def print_stats(df, love=False, save=False):
     print(file=file)
     
     # Calculate messages per hour per user
-    print_title('Messages per hour', file=file)
+    print_title('Mensagens por Hora', file=file)
     for user in df.User.unique():
         start = df.Date[df[df.User == user].index[0]]
         end = df.Date[df[df.User == user].index[-1]]
@@ -427,7 +427,7 @@ def print_stats(df, love=False, save=False):
     df['avg_length_charac'] = df.apply(lambda row: len(row.Message_Only_Text), 1)
     
     # Avg number of words per message
-    print_title("Avg nr Words per Message", file=file)
+    print_title("Nº de Palavras por Mensagem", file=file)
     for user in df.User.unique():
         mean = (sum(df.loc[df.User == user, 'avg_length_words']) / 
                 len(df.loc[df.User == user, 'avg_length_words']))
@@ -435,7 +435,7 @@ def print_stats(df, love=False, save=False):
     print(file=file)
     
     # Average length of message
-    print_title('Avg length of Message', file=file)
+    print_title('Média do Comprimento da Mensagem', file=file)
     for user in df.User.unique():
         mean = (sum(df.loc[df.User == user, 'avg_length_charac']) / 
                 len(df.loc[df.User == user, 'avg_length_charac']))
@@ -443,15 +443,15 @@ def print_stats(df, love=False, save=False):
     print(file=file)
     
     # Highscore Day
-    print_title('Highscore Day per User', file=file)
+    print_title('Dia com mais Mensagem por Usuário', file=file)
     df['Date_only'] = df.apply(lambda x: str(x.Date).split(' ')[0], 1)
     for user in df.User.unique():
         temp = df[df.User == user].groupby(by='Date_only').count()
         temp.loc[temp['User'].idxmax()]
 
         print(user, file=file)
-        print("Messages: \t{}".format(temp.loc[temp['User'].idxmax()].User), file=file)
-        print("Day: \t\t{}".format(temp['User'].idxmax()), file=file)
+        print("Mensagens: \t{}".format(temp.loc[temp['User'].idxmax()].User), file=file)
+        print("Dia: \t\t{}".format(temp['User'].idxmax()), file=file)
         print(file=file)
     
     # Count for each row if somebody said "I love you"
@@ -508,7 +508,7 @@ def print_timing(df, save=False):
     response = df[(df.Response_Time/60/60/24) < 0.5]
 
     # Then, for each user calculate the average response time
-    print_title("Avg. Response Time in Minutes", file=file)
+    print_title("Tempo de Resposta Médio em Minutos", file=file)
 
     for user in response.User.unique():
         minutes = round(np.mean(response.loc[response.User == user, 'Response_Time']) / 60, 2)
@@ -520,7 +520,7 @@ def print_timing(df, save=False):
     response = df[(df.Response_Time/60/60/24) > 1]
 
     # Then, for each user calculate the average response time
-    print_title("Nr. Initiated Messages", file=file)
+    print_title("Nº de Mensagens Iniciadas", file=file)
     
     for user in response.User.unique():
         nr_initiated = len(response.loc[response.User == user])
